@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+           http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="false" autowire="false"/>
+
+        <service id="symandy_makefile_maker.registry.executable_registry" class="Symandy\MakefileMakerBundle\Registry\ExecutableRegistry"/>
+        <service id="Symandy\MakefileMakerBundle\Registry\ExecutableRegistryInterface" alias="symandy_makefile_maker.registry.executable_registry"/>
+
+        <service id="symandy_makefile_maker.builder.group" class="Symandy\MakefileMakerBundle\Builder\GroupBuilder">
+            <argument key="$executableRegistry" type="service" id="symandy_makefile_maker.registry.executable_registry"/>
+        </service>
+        <service id="Symandy\MakefileMakerBundle\Builder\GroupBuilderInterface" alias="symandy_makefile_maker.builder.group"/>
+
+        <service id="symandy_makefile_maker.provider.group" class="Symandy\MakefileMakerBundle\Provider\GroupProvider">
+            <argument key="$groupBuilder" type="service" id="symandy_makefile_maker.builder.group"/>
+        </service>
+        <service id="Symandy\MakefileMakerBundle\Provider\GroupProviderInterface" alias="symandy_makefile_maker.provider.group"/>
+
+        <service id="symandy_makefile_maker.maker.make_makefile" class="Symandy\MakefileMakerBundle\Maker\MakeMakefile">
+            <argument key="$executableRegistry" type="service" id="symandy_makefile_maker.registry.executable_registry"/>
+            <argument key="$filesystem" type="service" id="filesystem"/>
+            <argument key="$projectDirectory" type="string">%kernel.project_dir%</argument>
+            <argument key="$provider" type="service" id="symandy_makefile_maker.provider.group"/>
+            <tag name="maker.command"/>
+        </service>
+    </services>
+
+</container>
