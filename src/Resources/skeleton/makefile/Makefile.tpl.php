@@ -15,7 +15,7 @@
 <?= sprintf("%s: ## %s\n", $command->getName(), $command->getDescription()) ?>
 <?php foreach ($command->getInstructions() as $instruction): ?>
 <?php if (null !== $executable = $instruction->getExecutable()): ?>
-<?= sprintf("\t@$%s %s %s\n", mb_strtoupper($executable->getName()), $instruction->getName(), $instruction->formatArgumentsAndOptions()) ?>
+<?= sprintf("\t@$(%s) %s %s\n", mb_strtoupper($executable->getName()), $instruction->getName(), $instruction->formatArgumentsAndOptions()) ?>
 <?php else: ?>
 <?= sprintf("\t%s %s\n", $instruction->getName(), $instruction->formatArgumentsAndOptions()) ?>
 <?php endif ?>
