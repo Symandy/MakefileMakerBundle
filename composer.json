@@ -30,7 +30,7 @@
         "symfony/phpunit-bridge": "^6.0"
     },
     "scripts": {
-        "analayse": "vendor/bin/phpstan analyse",
+        "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/phpunit tests --colors always"
     }
 }
