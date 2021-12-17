@@ -26,14 +26,11 @@ final class BuilderGroupTest extends TestCase
 
         $groupBuilder = new GroupBuilder($executableRegistry);
 
-        $groupsConfig = $this->provideGroupsConfiguration();
+        $groupConfig = $this->provideGroupConfiguration();
 
-        foreach ($groupsConfig as $groupName => $groupConfig) {
-            $group = $groupBuilder->build($groupConfig['name'] ?? $groupName, $groupConfig);
+        $group = $groupBuilder->build('test-group', $groupConfig);
 
-            self::assertEquals($this->buildExpectedGroup($executableRegistry), $group);
-        }
-
+        self::assertEquals($this->buildExpectedGroup($executableRegistry), $group);
     }
 
     public function buildExpectedGroup(ExecutableRegistryInterface $executableRegistry): Group
@@ -57,27 +54,28 @@ final class BuilderGroupTest extends TestCase
         return $group;
     }
 
-    public function provideGroupsConfiguration(): array
+    /**
+     * @return array{commands: array}
+     */
+    public function provideGroupConfiguration(): array
     {
         return [
-            'test-group' => [
-                'commands' => [
-                    't1' => [
-                        'name' => 'test-command',
-                        'description' => 'description test command',
-                        'instructions' => [
-                            [
-                                'executable' => 'test-executable',
-                                'name' => 'test-instruction',
-                                'arguments' => ['test-argument'],
-                                'options' => [
-                                    ['key' => 'test-option', 'value' => 'test-first-value'],
-                                    ['key' => 'o', 'value' => 'test-second-value'],
-                                    ['key' => '--foo', 'value' => null],
-                                ]
+            'commands' => [
+                't1' => [
+                    'name' => 'test-command',
+                    'description' => 'description test command',
+                    'instructions' => [
+                        [
+                            'executable' => 'test-executable',
+                            'name' => 'test-instruction',
+                            'arguments' => ['test-argument'],
+                            'options' => [
+                                ['key' => 'test-option', 'value' => 'test-first-value'],
+                                ['key' => 'o', 'value' => 'test-second-value'],
+                                ['key' => '--foo', 'value' => null],
                             ]
-                        ],
-                    ]
+                        ]
+                    ],
                 ]
             ]
         ];
