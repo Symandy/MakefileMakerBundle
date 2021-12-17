@@ -76,7 +76,7 @@ final class GroupBuilder implements GroupBuilderInterface
     }
 
     /**
-     * @param array<int|string, string|null> $config
+     * @param array<int, array{key: string, value: string|null}> $config
      */
     private function buildOptions(Instruction $instruction, array $config): void
     {
