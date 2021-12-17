@@ -11,7 +11,7 @@ use Symandy\MakefileMakerBundle\Model\Instruction;
 final class InstructionTest extends TestCase
 {
 
-    public function test_set_properties(): Instruction
+    public function testSetProperties(): Instruction
     {
         $instruction = new Instruction('test-instruction');
 
@@ -26,9 +26,9 @@ final class InstructionTest extends TestCase
     }
 
     /**
-     * @depends test_set_properties
+     * @depends testSetProperties
      */
-    public function test_add_arguments(Instruction $instruction): void
+    public function testAddArguments(Instruction $instruction): void
     {
         $arguments = ['test-argument'];
 
@@ -41,9 +41,9 @@ final class InstructionTest extends TestCase
     }
 
     /**
-     * @depends test_set_properties
+     * @depends testSetProperties
      */
-    public function test_add_options(Instruction $instruction): void
+    public function testAddOptions(Instruction $instruction): void
     {
         $options = ['--test-option' => 'ok'];
 

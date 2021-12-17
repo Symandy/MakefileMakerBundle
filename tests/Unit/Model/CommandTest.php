@@ -11,7 +11,7 @@ use Symandy\MakefileMakerBundle\Model\Instruction;
 final class CommandTest extends TestCase
 {
 
-    public function test_set_properties(): Command
+    public function testSetProperties(): Command
     {
         $command = new Command('test-command', 'description test command');
 
@@ -22,9 +22,9 @@ final class CommandTest extends TestCase
     }
 
     /**
-     * @depends test_set_properties
+     * @depends testSetProperties
      */
-    public function test_add_instructions(Command $command): void
+    public function testAddInstructions(Command $command): void
     {
         self::assertSame(0, count($command->getInstructions()));
 

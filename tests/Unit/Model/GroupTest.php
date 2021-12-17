@@ -11,7 +11,7 @@ use Symandy\MakefileMakerBundle\Model\Group;
 final class GroupTest extends TestCase
 {
 
-    public function test_set_properties(): Group
+    public function testSetProperties(): Group
     {
         $group = new Group('test-group');
 
@@ -21,9 +21,9 @@ final class GroupTest extends TestCase
     }
 
     /**
-     * @depends test_set_properties
+     * @depends testSetProperties
      */
-    public function test_add_commands(Group $group): void
+    public function testAddCommands(Group $group): void
     {
         self::assertSame(0, count($group->getCommands()));
 

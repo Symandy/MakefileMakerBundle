@@ -10,7 +10,7 @@ use Symandy\MakefileMakerBundle\Model\Executable;
 final class ExecutableTest extends TestCase
 {
 
-    public function test_set_properties(): void
+    public function testSetProperties(): void
     {
         $executable = new Executable('name-test', 'test', 'console', '/path/to/test/dir');
 
