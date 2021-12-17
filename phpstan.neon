@@ -1,0 +1,10 @@
+parameters:
+  level: 9
+  paths:
+    - src
+  ignoreErrors:
+    - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
+    - '#Property Symandy\\MakefileMakerBundle\\Provider\\GroupProvider::\$groupsDefinition type has no value type specified in iterable type array.#'
+    - '#Method Symandy\\MakefileMakerBundle\\Provider\\GroupProvider::__construct\(\) has parameter \$groupsDefinition with no value type specified in iterable type array.#'
+    - '#Method Symandy\\MakefileMakerBundle\\DependencyInjection\\SymandyMakefileMakerExtension::loadInternal\(\) has parameter \$mergedConfig with no value type specified in iterable type array.#'
+    - '#Method Symandy\\MakefileMakerBundle\\Builder\\GroupBuilder[A-Za-z]*::build[A-Za-z]*\(\) has parameter \$config with no value type specified in iterable type array.#'

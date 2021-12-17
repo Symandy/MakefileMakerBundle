@@ -9,8 +9,12 @@ use Symandy\MakefileMakerBundle\Model\Executable;
 final class ExecutableRegistry implements ExecutableRegistryInterface
 {
 
+    /** @var array<string, Executable> */
     private array $registry = [];
 
+    /**
+     * @return array<string, Executable>
+     */
     public function all(): array
     {
         return $this->registry;

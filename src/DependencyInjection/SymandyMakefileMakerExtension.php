@@ -20,6 +20,7 @@ final class SymandyMakefileMakerExtension extends ConfigurableExtension implemen
     CompilerPassInterface
 {
 
+    /** @var array<int, array{name: string, filename: string|null, output: string|null, path: string|null}>  */
     private array $executables = [];
 
     /**
@@ -63,7 +64,7 @@ final class SymandyMakefileMakerExtension extends ConfigurableExtension implemen
             $path = $executable['path'] ?? $finder->find($filename);
 
             if (null === $path) {
-                throw new InvalidArgumentException(sprintf('Could not find any "%s" executable ', $executable));
+                throw new InvalidArgumentException(sprintf('Could not find any "%s" executable ', $name));
             }
 
             $definition->addMethodCall('add', [$name, $filename, $output, $path]);

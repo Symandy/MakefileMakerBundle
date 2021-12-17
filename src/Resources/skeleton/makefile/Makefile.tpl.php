@@ -1,21 +1,43 @@
 .DEFAULT_GOAL := help
+<?php if (!isset($executables) || !isset($groups)) {
+    throw new LogicException('Variables $executables and/or $groups are not defined'); }
+?>
 
-<?php /** @noinspection PhpUndefinedVariableInspection */ foreach ($executables as $executable): ?>
+<?php foreach ($executables as $executable): ?>
 <?php /** @var Symandy\MakefileMakerBundle\Model\Executable $executable */?>
-<?= sprintf("%s = %s %s\n", mb_strtoupper($executable->getName()), $executable->getPath(), null !== $executable->getOutput() ? $executable->getOutput() : '') ?>
+<?= sprintf(
+        "%s = %s %s\n",
+        mb_strtoupper($executable->getName()),
+        $executable->getPath(),
+        null !== $executable->getOutput() ? $executable->getOutput() : ''
+    ) ?>
 <?php endforeach; ?>
 
-<?php /** @noinspection PhpUndefinedVariableInspection */ foreach ($groups as $group): ?>
-<?php /** @var Symandy\MakefileMakerBundle\Model\Group $group */?>
+<?php foreach ($groups as $group): ?>
+<?php /** @var Symandy\MakefileMakerBundle\Model\Group $group */ ?>
 ##
 ## <?= sprintf("%s\n", ucwords($group->getName())) ?>
-.PHONY: <?= sprintf("%s\n", implode(' ', array_map(fn (Symandy\MakefileMakerBundle\Model\Command $command) => $command->getName(), $group->getCommands()))) ?>
+.PHONY: <?= sprintf(
+    "%s\n",
+    implode(
+        ' ',
+        array_map(
+            fn(Symandy\MakefileMakerBundle\Model\Command $command) => $command->getName(),
+            $group->getCommands()
+        )
+    )
+) ?>
 
 <?php foreach ($group->getCommands() as $command): ?>
 <?= sprintf("%s: ## %s\n", $command->getName(), $command->getDescription()) ?>
 <?php foreach ($command->getInstructions() as $instruction): ?>
 <?php if (null !== $executable = $instruction->getExecutable()): ?>
-<?= sprintf("\t@$(%s) %s %s\n", mb_strtoupper($executable->getName()), $instruction->getName(), $instruction->formatArgumentsAndOptions()) ?>
+<?= sprintf(
+    "\t@$(%s) %s %s\n",
+    mb_strtoupper($executable->getName()),
+    $instruction->getName(),
+    $instruction->formatArgumentsAndOptions()
+) ?>
 <?php else: ?>
 <?= sprintf("\t%s %s\n", $instruction->getName(), $instruction->formatArgumentsAndOptions()) ?>
 <?php endif ?>

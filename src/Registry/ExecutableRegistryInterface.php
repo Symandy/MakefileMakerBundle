@@ -9,6 +9,9 @@ use Symandy\MakefileMakerBundle\Model\Executable;
 interface ExecutableRegistryInterface
 {
 
+    /**
+     * @return array<string, Executable>
+     */
     public function all(): array;
 
     public function get(string $executable): ?Executable;

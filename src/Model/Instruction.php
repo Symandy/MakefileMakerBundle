@@ -11,8 +11,10 @@ final class Instruction
 
     private ?string $name;
 
+    /** @var array<int, string> */
     private array $arguments = [];
 
+    /** @var array<string, string|null> */
     private array $options = [];
 
     public function __construct(string $name = null)
@@ -40,6 +42,9 @@ final class Instruction
         $this->name = $name;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function getArguments(): array
     {
         return $this->arguments;
@@ -50,6 +55,9 @@ final class Instruction
         $this->arguments[] = $argument;
     }
 
+    /**
+     * @return array<string, string|null>
+     */
     public function getOptions(): array
     {
         return $this->options;

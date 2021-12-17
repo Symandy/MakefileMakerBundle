@@ -7,28 +7,23 @@ namespace Symandy\MakefileMakerBundle\Model;
 final class Group
 {
 
-    private ?string $name;
+    private string $name;
 
-    /** @var Command[]  */
+    /** @var array<int, Command>  */
     private array $commands = [];
 
-    public function __construct(string $name = null)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): void
-    {
-        $this->name = $name;
-    }
-
     /**
-     * @return Command[]
+     * @return array<int, Command>
      */
     public function getCommands(): array
     {
