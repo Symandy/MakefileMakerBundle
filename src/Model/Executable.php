@@ -23,22 +23,22 @@ final class Executable
         $this->path = $path;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function getFilename(): ?string
+    public function getFilename(): string
     {
         return $this->filename;
     }
 
-    public function setFilename(?string $filename): void
+    public function setFilename(string $filename): void
     {
         $this->filename = $filename;
     }
@@ -53,12 +53,12 @@ final class Executable
         $this->output = $output;
     }
 
-    public function getPath(): ?string
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    public function setPath(?string $path): void
+    public function setPath(string $path): void
     {
         $this->path = $path;
     }

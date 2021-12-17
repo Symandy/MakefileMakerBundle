@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symandy\MakefileMakerBundle\Maker;
 
+use Symandy\MakefileMakerBundle\Model\Command;
 use Symandy\MakefileMakerBundle\Model\Group;
 use Symandy\MakefileMakerBundle\Provider\GroupProviderInterface;
 use Symandy\MakefileMakerBundle\Registry\ExecutableRegistryInterface;
@@ -12,7 +13,8 @@ use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -34,6 +36,7 @@ final class MakeMakefile extends AbstractMaker
 
     private GroupProviderInterface $provider;
 
+    /** @var array<int, Group> */
     private array $groups = [];
 
     public function __construct(
@@ -58,7 +61,7 @@ final class MakeMakefile extends AbstractMaker
         return 'Creates a makefile for Symfony commands';
     }
 
-    public function configureCommand(Command $command, InputConfiguration $inputConfig): void
+    public function configureCommand(SymfonyCommand $command, InputConfiguration $inputConfig): void
     {
         $command
             ->addOption(
@@ -74,11 +77,11 @@ final class MakeMakefile extends AbstractMaker
     {
     }
 
-    public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
+    public function interact(InputInterface $input, ConsoleStyle $io, SymfonyCommand $command): void
     {
+        /** @var QuestionHelper $helper */
         $helper = $command->getHelper('question');
 
-        /** @var Group[] $groups */
         $groups = $this->provider->provideAvailableGroups();
 
         $question = new ChoiceQuestion(
@@ -87,6 +90,7 @@ final class MakeMakefile extends AbstractMaker
         );
         $question->setMultiselect(true);
 
+        /** @var array<int, Group> $ */
         $groupAnswers = $helper->ask($input, $io, $question);
 
         if (in_array(self::CHOICE_ALL, $groupAnswers)) {
@@ -110,6 +114,7 @@ final class MakeMakefile extends AbstractMaker
             );
             $question->setMultiselect(true);
 
+            /** @var array<int, Command> $commandAnswers */
             $commandAnswers = $helper->ask($input, $io, $question);
 
             if ([] === $commandAnswers) {

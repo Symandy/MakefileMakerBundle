@@ -19,17 +19,27 @@ final class GroupBuilder implements GroupBuilderInterface
         $this->executableRegistry = $executableRegistry;
     }
 
+    /**
+     * @param string $name
+     * @param array{commands: array} $config
+     * @return Group
+     */
     public function build(string $name, array $config): Group
     {
         $group = new Group($name);
 
-        foreach ($config['commands'] ?? [] as $name => $commandConfig) {
+        foreach ($config['commands'] as $name => $commandConfig) {
             $group->addCommand($this->buildCommand($commandConfig['name'] ?? $name, $commandConfig));
         }
 
         return $group;
     }
 
+    /**
+     * @param string $name
+     * @param array{name: string, description: string, instructions: array} $config
+     * @return Command
+     */
     private function buildCommand(string $name, array $config): Command
     {
         $command = new Command($name);
@@ -42,6 +52,10 @@ final class GroupBuilder implements GroupBuilderInterface
         return $command;
     }
 
+    /**
+     * @param array{name: string, executable: string, arguments: array<int, string>, options: array} $config
+     * @return Instruction
+     */
     private function buildInstruction(array $config): Instruction
     {
         $instruction = new Instruction($config['name']);
@@ -52,11 +66,21 @@ final class GroupBuilder implements GroupBuilderInterface
             $instruction->setExecutable($executable);
         }
 
-        foreach ($config['arguments'] ?? [] as $argument) {
+        foreach ($config['arguments'] as $argument) {
             $instruction->addArgument($argument);
         }
 
-        foreach ($config['options'] ?? [] as ['key' => $key, 'value' => $value]) {
+        $this->buildOptions($instruction, $config['options']);
+
+        return $instruction;
+    }
+
+    /**
+     * @param array<int, array{key: string, value: string|null}> $config
+     */
+    private function buildOptions(Instruction $instruction, array $config): void
+    {
+        foreach ($config as ['key' => $key, 'value' => $value]) {
             if (str_starts_with($key, '-')) {
                 $instruction->addOption($key, $value);
             } elseif (1 < strlen($key)) {
@@ -65,8 +89,6 @@ final class GroupBuilder implements GroupBuilderInterface
                 $instruction->addOption(sprintf('-%s', $key), $value);
             }
         }
-
-        return $instruction;
     }
 
 }

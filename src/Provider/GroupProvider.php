@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Symandy\MakefileMakerBundle\Provider;
 
 use Symandy\MakefileMakerBundle\Builder\GroupBuilderInterface;
+use Symandy\MakefileMakerBundle\Model\Group;
 
 final class GroupProvider implements GroupProviderInterface
 {
@@ -21,6 +22,9 @@ final class GroupProvider implements GroupProviderInterface
         $this->groupBuilder = $groupBuilder;
     }
 
+    /**
+     * @return array<int, Group>
+     */
     public function provideAvailableGroups(): array
     {
         $groups = [];

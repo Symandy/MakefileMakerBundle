@@ -11,7 +11,7 @@ final class Command
 
     private ?string $description;
 
-    /** @var Instruction[]  */
+    /** @var array<int, Instruction>  */
     private array $instructions = [];
 
     public function __construct(string $name = null, string $description = null)
@@ -41,7 +41,7 @@ final class Command
     }
 
     /**
-     * @return Instruction[]
+     * @return array<int, Instruction>
      */
     public function getInstructions(): array
     {
@@ -55,7 +55,7 @@ final class Command
 
     public function __toString(): string
     {
-        return $this->getName();
+        return $this->getName() ?? '';
     }
 
 }
