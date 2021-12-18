@@ -10,3 +10,4 @@ parameters:
     - '#Method Symandy\\MakefileMakerBundle\\DependencyInjection\\SymandyMakefileMakerExtension::loadInternal\(\) has parameter \$mergedConfig with no value type specified in iterable type array.#'
     - '#Method Symandy\\MakefileMakerBundle\\Builder\\GroupBuilder[A-Za-z]*::build[A-Za-z]*\(\) has parameter \$config with no value type specified in iterable type array.#'
     - '#Method Symandy\\Tests\\MakefileMakerBundle\\Unit\\Builder\\BuilderGroupTest::provideGroupConfiguration\(\) return type has no value type specified in iterable type array.#'
+    - '#Method Symandy\\Tests\\MakefileMakerBundle\\Unit\\Provider\\GroupProviderTest::provideConfiguration\(\) return type has no value type specified in iterable type array.#'
