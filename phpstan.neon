@@ -4,7 +4,7 @@ parameters:
     - src
     - tests
   ignoreErrors:
-    - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
+    - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::fixXmlConfig\(\).#'
     - '#Property Symandy\\MakefileMakerBundle\\Provider\\GroupProvider::\$groupsDefinition type has no value type specified in iterable type array.#'
     - '#Method Symandy\\MakefileMakerBundle\\Provider\\GroupProvider::__construct\(\) has parameter \$groupsDefinition with no value type specified in iterable type array.#'
     - '#Method Symandy\\MakefileMakerBundle\\DependencyInjection\\SymandyMakefileMakerExtension::loadInternal\(\) has parameter \$mergedConfig with no value type specified in iterable type array.#'

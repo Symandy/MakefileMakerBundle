@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xsd:schema xmlns="http://symandy.com/schema/dic/makefile_maker"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://symandy.com/schema/dic/makefile_maker"
+            elementFormDefault="qualified">
+
+    <xsd:element name="config" type="config"/>
+
+    <xsd:complexType name="config">
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:sequence>
+                <xsd:element name="executable" type="executable" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element name="group" type="group" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:choice>
+    </xsd:complexType>
+
+    <xsd:complexType name="executable">
+        <xsd:attribute name="name" type="xsd:string"/>
+        <xsd:attribute name="filename" type="xsd:string"/>
+        <xsd:attribute name="output" type="xsd:string"/>
+        <xsd:attribute name="path" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="group">
+        <xsd:sequence>
+            <xsd:element name="command" type="command" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="command">
+        <xsd:sequence>
+            <xsd:element name="instruction" type="instruction" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string"/>
+        <xsd:attribute name="description" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="instruction">
+        <xsd:sequence>
+            <xsd:element name="argument" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="option" type="option" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="executable" type="xsd:string"/>
+        <xsd:attribute name="name" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="option">
+        <xsd:attribute name="key" type="xsd:string"/>
+        <xsd:attribute name="value" type="xsd:string"/>
+    </xsd:complexType>
+
+</xsd:schema>

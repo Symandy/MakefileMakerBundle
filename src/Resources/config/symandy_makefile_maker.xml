@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:symandy="http://symandy.com/schema/dic/makefile_maker"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        https://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <symandy:config>
+
+        <symandy:executable name="composer" />
+        <symandy:executable name="symfony_bin" filename="symfony"/>
+        <symandy:executable name="symfony_console" filename="symfony" output="console"/>
+        <symandy:executable name="yarn"/>
+
+
+        <symandy:group name="composer">
+            <symandy:command name="composer-install" description="Install composer dependencies">
+                <symandy:instruction executable="composer" name="install"/>
+            </symandy:command>
+
+            <symandy:command name="composer-update" description="Update composer dependencies">
+                <symandy:instruction executable="composer" name="update"/>
+            </symandy:command>
+
+            <symandy:command name="composer-validate" description="Validate composer.json and composer.lock">
+                <symandy:instruction executable="composer" name="validate"/>
+            </symandy:command>
+
+            <symandy:command name="composer-dump" description="Dump composer autoload">
+                <symandy:instruction executable="composer" name="dump-autoload"/>
+            </symandy:command>
+
+            <symandy:command name="composer-dump-prod" description="Dump composer autoload for prod environment">
+                <symandy:instruction executable="composer" name="dump-autoload">
+                    <symandy:option key="no-dev"/>
+                    <symandy:option key="classmap-authoritative"/>
+                    <symandy:option key="optimize"/>
+                </symandy:instruction>
+            </symandy:command>
+        </symandy:group>
+
+
+        <symandy:group name="doctrine">
+            <symandy:command name="db-cache" description="Clear doctrine database cache">
+                <symandy:instruction executable="symfony_console" name="doctrine:cache:metadata-clear"/>
+                <symandy:instruction executable="symfony_console" name="doctrine:cache:clear-query"/>
+                <symandy:instruction executable="symfony_console" name="doctrine:cache:clear-result"/>
+            </symandy:command>
+
+            <symandy:command name="db-create" description="Create database and schema">
+                <symandy:instruction executable="symfony_console" name="doctrine:database:create">
+                    <symandy:option key="if-not-exists"/>
+                </symandy:instruction>
+                <symandy:instruction executable="symfony_console" name="doctrine:schema:create"/>
+            </symandy:command>
+
+            <symandy:command name="db-diff" description="Generate SQL requests to synchronize with current metadata">
+                <symandy:instruction executable="symfony_console" name="doctrine:schema:update">
+                    <symandy:option key="dump-sql"/>
+                </symandy:instruction>
+            </symandy:command>
+
+            <symandy:command name="db-migrate" description="Execute not executed migrations">
+                <symandy:instruction executable="symfony_console" name="doctrine:migrations:migrate"/>
+            </symandy:command>
+
+            <symandy:command name="db-migrate-diff" description="Generate new migration with diff SQL queries">
+                <symandy:instruction executable="symfony_console" name="doctrine:migrations:diff"/>
+            </symandy:command>
+
+            <symandy:command name="db-migrate-list" description="List not executed migrations">
+                <symandy:instruction executable="symfony_console" name="doctrine:migrations:list"/>
+            </symandy:command>
+
+            <symandy:command name="db-migrate-status" description="Display migration versions status">
+                <symandy:instruction executable="symfony_console" name="doctrine:migrations:status"/>
+            </symandy:command>
+
+            <symandy:command name="db-update" description="Update database to latest mapping">
+                <symandy:instruction executable="symfony_console" name="doctrine:schema:update">
+                    <symandy:option key="force"/>
+                </symandy:instruction>
+            </symandy:command>
+
+            <symandy:command name="db-validate" description="Validate entities and database sync with mapping">
+                <symandy:instruction executable="symfony_console" name="doctrine:schema:validate"/>
+            </symandy:command>
+        </symandy:group>
+
+
+        <symandy:group name="helper">
+            <symandy:command name="dump" description="Start server:dump in CLI">
+                <symandy:instruction executable="symfony_console" name="server:dump"/>
+            </symandy:command>
+        </symandy:group>
+
+
+        <symandy:group name="messenger">
+            <symandy:command name="messenger-start" description="Consume messenger messages">
+                <symandy:instruction executable="symfony_console" name="messenger:consume"/>
+            </symandy:command>
+
+            <symandy:command name="messenger-loud" description="Consume messenger messages with -vv flag">
+                <symandy:instruction executable="symfony_console" name="messenger:consume">
+                    <symandy:option key="-vv"/>
+                </symandy:instruction>
+            </symandy:command>
+
+            <symandy:command name="messenger-stop" description="Stop messenger workers after current message">
+                <symandy:instruction executable="symfony_console" name="messenger:stop-workers"/>
+            </symandy:command>
+        </symandy:group>
+
+
+        <symandy:group name="symfony">
+            <symandy:command name="requirements" description="Check Symfony requirements">
+                <symandy:instruction executable="symfony_bin" name="check:requirements"/>
+            </symandy:command>
+
+            <symandy:command name="security" description="Check packages vulnerabilities (using composer.lock)">
+                <symandy:instruction executable="symfony_bin" name="security:check"/>
+            </symandy:command>
+
+            <symandy:command name="serve" description="Run symfony web server in the background">
+                <symandy:instruction executable="symfony_bin" name="serve">
+                    <symandy:option key="daemon"/>
+                </symandy:instruction>
+            </symandy:command>
+
+            <symandy:command name="server-stop" description="Stop symfony web server">
+                <symandy:instruction executable="symfony_bin" name="server:stop"/>
+            </symandy:command>
+        </symandy:group>
+
+
+        <symandy:group name="lint">
+            <symandy:command name="lint-container" description="Ensure that arguments injected into services match type declarations">
+                <symandy:instruction executable="symfony_console" name="lint:container"/>
+            </symandy:command>
+
+            <symandy:command name="lint-twig-prod" description="Check twig syntax in /templates folder (prod environment)">
+                <symandy:instruction executable="symfony_console" name="lint:twig">
+                    <symandy:argument>templates</symandy:argument>
+                    <symandy:option key="e" value="prod"/>
+                </symandy:instruction>
+            </symandy:command>
+
+            <symandy:command name="lint-xliff" description="Check xliff syntax in /translations folder">
+                <symandy:instruction executable="symfony_console" name="lint:xliff">
+                    <symandy:argument>translations</symandy:argument>
+                </symandy:instruction>
+            </symandy:command>
+
+            <symandy:command name="lint-yaml" description="Check yaml syntax in /config and /translations folders">
+                <symandy:instruction executable="symfony_console" name="lint:yaml">
+                    <symandy:argument>config</symandy:argument>
+                    <symandy:argument>translations</symandy:argument>
+                </symandy:instruction>
+            </symandy:command>
+        </symandy:group>
+
+    </symandy:config>
+
+</container>

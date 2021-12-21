@@ -11,7 +11,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\Process\ExecutableFinder;
 
@@ -39,10 +38,9 @@ final class SymandyMakefileMakerExtension extends ConfigurableExtension implemen
 
     public function prepend(ContainerBuilder $container): void
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         try {
-            $loader->load('symandy_makefile_maker.yaml');
+            $loader->load('symandy_makefile_maker.xml');
         } catch (Exception $e) {
         }
     }
@@ -69,6 +67,16 @@ final class SymandyMakefileMakerExtension extends ConfigurableExtension implemen
 
             $definition->addMethodCall('add', [$name, $filename, $output, $path]);
         }
+    }
+
+    public function getNamespace(): string
+    {
+        return 'http://symandy.com/schema/dic/makefile_maker';
+    }
+
+    public function getXsdValidationBasePath(): string
+    {
+        return __DIR__ . '/../Resources/config/schema';
     }
 
 }
