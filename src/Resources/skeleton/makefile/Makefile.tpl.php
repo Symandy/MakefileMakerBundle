@@ -15,6 +15,9 @@
 
 <?php foreach ($groups as $group): ?>
 <?php /** @var Symandy\MakefileMakerBundle\Model\Group $group */ ?>
+<?php if ([] === $group->getCommands()) {
+    continue;
+} ?>
 ##
 ## <?= sprintf("%s\n", ucwords($group->getName())) ?>
 .PHONY: <?= sprintf(
