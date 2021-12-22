@@ -6,8 +6,8 @@ namespace Symandy\MakefileMakerBundle\Maker;
 
 use Symandy\MakefileMakerBundle\Model\Command;
 use Symandy\MakefileMakerBundle\Model\Group;
+use Symandy\MakefileMakerBundle\Provider\ExecutableProviderInterface;
 use Symandy\MakefileMakerBundle\Provider\GroupProviderInterface;
-use Symandy\MakefileMakerBundle\Registry\ExecutableRegistryInterface;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;
@@ -30,7 +30,7 @@ final class MakeMakefile extends AbstractMaker
 
     private string $projectDirectory;
 
-    private ExecutableRegistryInterface $executableRegistry;
+    private ExecutableProviderInterface $executableProvider;
 
     private Filesystem $filesystem;
 
@@ -41,12 +41,12 @@ final class MakeMakefile extends AbstractMaker
 
     public function __construct(
         string $projectDirectory,
-        ExecutableRegistryInterface $executableRegistry,
+        ExecutableProviderInterface $executableProvider,
         Filesystem $filesystem,
         GroupProviderInterface $provider
     ) {
+        $this->executableProvider = $executableProvider;
         $this->filesystem = $filesystem;
-        $this->executableRegistry = $executableRegistry;
         $this->projectDirectory = $projectDirectory;
         $this->provider = $provider;
     }
@@ -144,7 +144,7 @@ final class MakeMakefile extends AbstractMaker
         }
 
         $generator->generateFile($filepath, self::TEMPLATE_PATH, [
-            'executables' => $this->executableRegistry->all(),
+            'executables' => $this->executableProvider->provideUsedExecutables($this->groups),
             'groups' => $this->groups
         ]);
 
