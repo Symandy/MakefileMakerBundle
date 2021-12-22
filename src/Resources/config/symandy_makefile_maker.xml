@@ -8,10 +8,7 @@
     <symandy:config>
 
         <symandy:executable name="composer" />
-        <symandy:executable name="symfony_bin" filename="symfony"/>
-        <symandy:executable name="symfony_console" filename="symfony" output="console"/>
         <symandy:executable name="yarn"/>
-
 
         <symandy:group name="composer">
             <symandy:command name="composer-install" description="Install composer dependencies">
