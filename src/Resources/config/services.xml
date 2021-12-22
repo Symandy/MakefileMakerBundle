@@ -21,8 +21,11 @@
         </service>
         <service id="Symandy\MakefileMakerBundle\Provider\GroupProviderInterface" alias="symandy_makefile_maker.provider.group"/>
 
+        <service id="symandy_makefile_maker.provider.executable" class="Symandy\MakefileMakerBundle\Provider\ExecutableProvider"/>
+        <service id="Symandy\MakefileMakerBundle\Provider\ExecutableProviderInterface" alias="symandy_makefile_maker.provider.executable" />
+
         <service id="symandy_makefile_maker.maker.make_makefile" class="Symandy\MakefileMakerBundle\Maker\MakeMakefile">
-            <argument key="$executableRegistry" type="service" id="symandy_makefile_maker.registry.executable_registry"/>
+            <argument key="$executableProvider" type="service" id="symandy_makefile_maker.provider.executable"/>
             <argument key="$filesystem" type="service" id="filesystem"/>
             <argument key="$projectDirectory" type="string">%kernel.project_dir%</argument>
             <argument key="$provider" type="service" id="symandy_makefile_maker.provider.group"/>
