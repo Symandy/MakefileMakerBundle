@@ -28,7 +28,7 @@ final class InstructionTest extends TestCase
     /**
      * @depends testSetProperties
      */
-    public function testAddArguments(Instruction $instruction): void
+    public function testAddArguments(Instruction $instruction): Instruction
     {
         $arguments = ['test-argument'];
 
@@ -38,12 +38,14 @@ final class InstructionTest extends TestCase
 
         self::assertSame(1, count($instruction->getArguments()));
         self::assertSame($arguments, $instruction->getArguments());
+
+        return $instruction;
     }
 
     /**
      * @depends testSetProperties
      */
-    public function testAddOptions(Instruction $instruction): void
+    public function testAddOptions(Instruction $instruction): Instruction
     {
         $options = ['--test-option' => 'ok'];
 
@@ -54,6 +56,53 @@ final class InstructionTest extends TestCase
         self::assertSame(1, count($instruction->getOptions()));
         self::assertSame($options, $instruction->getOptions());
         self::assertSame('ok', $instruction->getOption('--test-option'));
+
+        return $instruction;
+    }
+
+    /**
+     * @depends testAddArguments
+     */
+    public function testFormatArguments(Instruction $instruction): Instruction
+    {
+        self::assertSame('test-argument', $instruction->formatArguments());
+
+        $instruction->addArgument('test-argument-2');
+
+        self::assertSame('test-argument test-argument-2', $instruction->formatArguments());
+
+        return $instruction;
+    }
+
+    /**
+     * @depends testSetProperties
+     */
+    public function testFormatOptions(Instruction $instruction): Instruction
+    {
+        self::assertSame('--test-option ok', $instruction->formatOptions());
+
+        $instruction->addOption('--test-empty-option', null);
+
+        self::assertSame('--test-option ok --test-empty-option', $instruction->formatOptions());
+
+        return $instruction;
+    }
+
+    /**
+     * @depends testFormatArguments
+     * @depends testFormatOptions
+     */
+    public function testFormatArgumentsAndOptions(Instruction $instruction): void
+    {
+        self::assertSame(
+            'test-argument test-argument-2 --test-option ok --test-empty-option',
+            $instruction->formatArgumentsAndOptions()
+        );
+
+
+        $instruction = new Instruction('test-instruction-2');
+
+        self::assertSame('', $instruction->formatArgumentsAndOptions());
     }
 
 }
