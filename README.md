@@ -57,7 +57,7 @@ SYMFONY_CONSOLE = /usr/local/bin/symfony console
 ...
 
 hello: ## Say hello
-	@SYMFONY_CONSOLE dump-autoload John --last-name Doe 
+	@SYMFONY_CONSOLE app:hello John --last-name Doe 
 ```
 
 Full configuration can be dumped using:
