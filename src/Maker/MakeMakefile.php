@@ -14,11 +14,9 @@ use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class MakeMakefile extends AbstractMaker
@@ -89,9 +87,6 @@ final class MakeMakefile extends AbstractMaker
             return;
         }
 
-        /** @var QuestionHelper $helper */
-        $helper = $command->getHelper('question');
-
         $groups = $this->provider->provideAvailableGroups();
 
         $question = new ChoiceQuestion(
@@ -101,17 +96,13 @@ final class MakeMakefile extends AbstractMaker
         $question->setMultiselect(true);
 
         /** @var array<int, Group> $ */
-        $groupAnswers = $helper->ask($input, $io, $question);
+        $groupAnswers = $io->askQuestion($question);
 
         if (in_array(self::CHOICE_ALL, $groupAnswers)) {
             $groupAnswers = $groups;
         }
 
-        $question = new ConfirmationQuestion(
-            'Do you want to modify which commands to import ? (Y/n) [default: no]',
-            false
-        );
-        if (!$helper->ask($input, $io, $question)) {
+        if (!$io->confirm('Do you want to modify which commands to import ?', false)) {
             $this->groups = $groupAnswers;
 
             return;
@@ -125,7 +116,7 @@ final class MakeMakefile extends AbstractMaker
             $question->setMultiselect(true);
 
             /** @var array<int, Command> $commandAnswers */
-            $commandAnswers = $helper->ask($input, $io, $question);
+            $commandAnswers = $io->askQuestion($question);
 
             if (in_array(self::CHOICE_NONE, $commandAnswers)) {
                 continue;
