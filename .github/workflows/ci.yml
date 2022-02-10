@@ -1,0 +1,49 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    ci:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php-versions:
+                    - 7.4
+                    - 8.0
+                    - 8.1
+        steps:
+            -   uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php-versions }}
+
+            -   uses: actions/checkout@v2
+
+            -   name: Cache Composer packages
+                if: ${{ !env.ACT }}
+                id: composer-cache
+                uses: actions/cache@v2
+                with:
+                    path: vendor
+                    key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                    restore-keys: |
+                        ${{ runner.os }}-php-
+
+            -   name: Install Dependencies (prefer lowest)
+                if: ${{ matrix.php-versions == '7.4' }}
+                run: composer update -q --no-ansi --no-interaction --no-progress --prefer-lowest
+
+            -   name: Install Dependencies
+                if: ${{ matrix.php-versions != '7.4' }}
+                run: composer update -q --no-ansi --no-interaction --no-progress
+
+            -   name: Run static analysis
+                run: composer run-script analyse
+
+            -   name: Execute tests (Unit tests) via PHPUnit
+                env:
+                    SYMFONY_DEPRECATIONS_HELPER: 'max[direct]=0'
+                run: composer run-script test
