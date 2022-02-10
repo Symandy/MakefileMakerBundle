@@ -81,6 +81,14 @@ final class MakeMakefile extends AbstractMaker
 
     public function interact(InputInterface $input, ConsoleStyle $io, SymfonyCommand $command): void
     {
+        $filepath = sprintf('%s/Makefile', $this->projectDirectory);
+
+        if (!$input->getOption('override') && $this->filesystem->exists($filepath)) {
+            $io->error('The Makefile already exists, please use -o or --override to override the existing Makefile');
+
+            return;
+        }
+
         /** @var QuestionHelper $helper */
         $helper = $command->getHelper('question');
 
@@ -143,6 +151,10 @@ final class MakeMakefile extends AbstractMaker
 
         if ($input->getOption('override') && $this->filesystem->exists($filepath)) {
             $this->filesystem->remove($filepath);
+        }
+
+        if ($this->filesystem->exists($filepath)) {
+            return;
         }
 
         $generator->generateFile($filepath, self::TEMPLATE_PATH, [
