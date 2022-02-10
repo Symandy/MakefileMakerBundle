@@ -12,7 +12,9 @@ This bundle includes some basics commands (Symfony, Doctrine, Composer and more)
 composer require --dev symandy/makefile-maker-bundle
 ```
 
-If you are not using [Symfony Flex](https://github.com/symfony/flex) add the following lines to `config/bundles.php`
+A PR to use Symfony Flex is currently opened (See [symfony/recipes-contrib:#1337](https://github.com/symfony/recipes-contrib/pull/1337))
+
+Until this PR is merged, update `config/bundles.php` to include the bundle only in dev and test environment
 
 ```php
 <?php
