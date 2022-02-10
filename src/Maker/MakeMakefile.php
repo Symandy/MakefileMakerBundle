@@ -28,6 +28,8 @@ final class MakeMakefile extends AbstractMaker
 
     private const CHOICE_ALL = 'all';
 
+    private const CHOICE_NONE = 'none';
+
     private string $projectDirectory;
 
     private ExecutableProviderInterface $executableProvider;
@@ -109,15 +111,15 @@ final class MakeMakefile extends AbstractMaker
 
         foreach ($groupAnswers as $group) {
             $question = new ChoiceQuestion(
-                sprintf('Which commands do you want to import from group "%s"', $group->getName()),
-                array_merge([self::CHOICE_ALL], $group->getCommands())
+                sprintf('Which commands do you want to import from group "%s" ?', $group->getName()),
+                array_merge([self::CHOICE_ALL], $group->getCommands(), [self::CHOICE_NONE])
             );
             $question->setMultiselect(true);
 
             /** @var array<int, Command> $commandAnswers */
             $commandAnswers = $helper->ask($input, $io, $question);
 
-            if ([] === $commandAnswers) {
+            if (in_array(self::CHOICE_NONE, $commandAnswers)) {
                 continue;
             }
 
